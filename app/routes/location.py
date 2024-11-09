@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sqlmodel import select
 
 from app.db import session
@@ -11,11 +11,16 @@ router = APIRouter(prefix="/location")
 def search_location() -> list[Location]:
     with session() as db:
         locations = select(Location)
-        return db.exec(locations).all()
+        return list(db.exec(locations).all())
 
 
 @router.get("/{id}")
 def get_location(id: int) -> Location:
     with session() as db:
         location_query = select(Location).where(Location.id == id)
-        return db.exec(location_query).first()
+        location = db.exec(location_query).first()
+    
+    if location is None:
+        raise HTTPException(status_code=404, detail=f"No location with {id} found")
+
+    return location
