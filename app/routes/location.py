@@ -44,7 +44,8 @@ def get_location(
     description="Create a new location.",
 )
 def create_location(
-    location_partial: LocationPartial, session: Session = Depends(session_fastapi_dependency)
+    location_partial: LocationPartial,
+    session: Session = Depends(session_fastapi_dependency),
 ) -> Location:
     location = Location(
         name=location_partial.name,
@@ -67,7 +68,9 @@ def create_location(
     description="Update an existing location.",
 )
 def update_location(
-    id: int, location_partial: LocationPartial, session: Session = Depends(session_fastapi_dependency)
+    id: int,
+    location_partial: LocationPartial,
+    session: Session = Depends(session_fastapi_dependency),
 ) -> Location:
     location = get_location_by_id(id, session)
 
