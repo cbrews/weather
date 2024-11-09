@@ -24,7 +24,7 @@ def session() -> Generator[Session, None, None]:
     yield Session(get_engine())
 
 
-def session_fastapi_dependency():
+def session_fastapi_dependency() -> Generator[Session, None, None]:
     """
     Session wrapped as a dependency for use by FastAPI
     """
