@@ -14,4 +14,8 @@ class Settings(BaseSettings):
 
 @lru_cache
 def settings() -> Settings:
+    """
+    Instantiates the settings from the environment.
+    Note that this is cached after initially called.
+    """
     return Settings()

@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session, select
 
-from app.services.location import get_location_by_id
 from app.db import session_fastapi_dependency
 from app.models.location import Location, LocationPartial
-
+from app.services.location import get_location_by_id
 
 router = APIRouter(prefix="/location")
 
@@ -16,10 +15,14 @@ router = APIRouter(prefix="/location")
     description="Search for locations by wildcard string.",
 )
 def search_location(
-    name: str = Query(),
+    search_query: str | None = Query(default=None),
     session: Session = Depends(session_fastapi_dependency),
 ) -> list[Location]:
-    locations = select(Location).where(Location.name == name)
+    locations = select(Location)
+
+    if search_query is not None:
+        locations = locations.where(Location.name == search_query)
+
     return list(session.exec(locations).all())
 
 
@@ -87,3 +90,21 @@ def update_location(
     session.refresh(location)
 
     return location
+
+
+@router.delete(
+    "/{id}",
+    status_code=204,
+    tags=["Location"],
+    description="Delete an existing location.",
+)
+def delete_location(
+    id: int,
+    session: Session = Depends(session_fastapi_dependency),
+) -> None:
+    location = get_location_by_id(id, session)
+
+    session.delete(location)
+    session.commit()
+
+    return None
