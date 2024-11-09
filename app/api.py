@@ -1,12 +1,33 @@
+import logging
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
 from app.db import session_fastapi_dependency as session
 from app.exceptions import NotFound
+from app.routes import get_routers
+from app.settings import settings
 
-api = FastAPI(dependencies=[Depends(session)])
+logger = logging.getLogger(__name__)
 
 
+# Handling for startup, shutdown
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    config = settings()
+    logger.info(f"Starting FastAPI application {config.app}")
+    yield
+
+
+# App initialization
+api = FastAPI(lifespan=lifespan, dependencies=[Depends(session)])
+for router in get_routers():
+    api.include_router(router)
+
+
+# Exception handlers
 @api.exception_handler(NotFound)
 def handle_not_found(request: Request, exc: NotFound) -> JSONResponse:
     return JSONResponse(

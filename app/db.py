@@ -32,5 +32,17 @@ def session_fastapi_dependency() -> Generator[Session, None, None]:
         yield s
 
 
+def drop_all() -> None:
+    """
+    Clear out schema
+    """
+    SQLModel.metadata.drop_all(get_engine())
+
+
 def migrate() -> None:
+    """
+    Create database based on models.
+
+    In the real world we would use migration files but this works for a toy system.
+    """
     SQLModel.metadata.create_all(get_engine())

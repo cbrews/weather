@@ -5,7 +5,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -u postgres"]
-      interval: 2s
+      interval: 20s
       timeout: 5s
       retries: 5
     ports:
@@ -17,7 +17,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -u postgres"]
-      interval: 2s
+      interval: 10s
       timeout: 5s
       retries: 5
     ports:
