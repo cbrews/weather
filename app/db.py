@@ -24,5 +24,13 @@ def session() -> Generator[Session, None, None]:
     yield Session(get_engine())
 
 
+def session_fastapi_dependency():
+    """
+    Session wrapped as a dependency for use by FastAPI
+    """
+    with session() as s:
+        yield s
+
+
 def migrate() -> None:
     SQLModel.metadata.create_all(get_engine())

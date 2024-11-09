@@ -1,11 +1,24 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres
     environment:
-      POSTGRES_MULTIPLE_DATABASES: weather, weather_test
       POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -u postgres"]
       interval: 2s
       timeout: 5s
       retries: 5
+    ports:
+      - 5432:5432
+  
+  postgres- test:
+    image: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -u postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5433:5432
