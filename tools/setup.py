@@ -17,8 +17,8 @@ def setup():
         env.generate_dotenv("local", ".env")
         env.generate_dotenv("test-local", ".env-test")
     except ValueError as e:
-       echo(style(e, bold=True))
-       raise Exit()
+        echo(style(e, bold=True))
+        raise Exit()
 
     echo("Loading local test environment...")
     load_dotenv(".env")
