@@ -1,16 +1,15 @@
-import yaml
 from dotenv import load_dotenv
 from typer import Exit, Typer, echo, style
 
 from app.db import migrate
-from tools.env import Env
 from app.models import *  # noqa: F403
+from tools.env import Env
 
 cli = Typer()
 
 
 @cli.command()
-def setup():
+def setup() -> None:
     echo("Generating .env file for local environments...")
     env = Env()
     try:

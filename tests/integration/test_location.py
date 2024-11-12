@@ -1,8 +1,11 @@
-from app.models.location import Location
 import json
 
+from fastapi.testclient import TestClient
 
-def test_location_apis(client):
+from app.models.location import Location
+
+
+def test_location_apis(client: TestClient) -> None:
     response = client.post(
         url="/location",
         json={

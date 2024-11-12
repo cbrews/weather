@@ -3,6 +3,7 @@ import yaml
 
 class Env:
     input_file: str
+    env_data: dict[str, str | int | bool | None]
 
     def __init__(self, input_file: str = "env.yaml"):
         self.input_file = input_file
@@ -16,7 +17,8 @@ class Env:
 
         if env_block is None:
             raise ValueError(
-                f"No environment block found for \"{env}\". Use one of {', '.join(env_data.keys())}"
+                f'No environment block found for "{env}". '
+                "Use one of {', '.join(env_data.keys())}"
             )
 
         with open(env_file, "w", encoding="utf-8") as fd:

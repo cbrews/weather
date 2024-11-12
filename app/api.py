@@ -1,4 +1,6 @@
 import logging
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.responses import JSONResponse
@@ -6,15 +8,14 @@ from fastapi.responses import JSONResponse
 from app.db import session_fastapi_dependency as session
 from app.exceptions import NotFound
 from app.routes import get_routers
-from contextlib import contextmanager
 from app.settings import settings
 
 logger = logging.getLogger(__name__)
 
 
 # Handling for startup, shutdown
-@contextmanager
-def lifespan(app: FastAPI):
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     config = settings()
     logger.info(f"Starting FastAPI application {config.app}")
     yield

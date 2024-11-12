@@ -50,10 +50,11 @@ def create_location(
     location_partial: LocationPartial,
     session: Session = Depends(session_fastapi_dependency),
 ) -> Location:
+    # Ignore types here, the validator will catch these
     location = Location(
-        name=location_partial.name,
-        lat=location_partial.lat,
-        long=location_partial.long,
+        name=location_partial.name,  # type: ignore[arg-type]
+        lat=location_partial.lat,  # type: ignore[arg-type]
+        long=location_partial.long,  # type: ignore[arg-type]
     )
 
     session.add(location)
