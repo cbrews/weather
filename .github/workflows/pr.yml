@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
+      - uses: terraform-linters/setup-tflint@v2
       - name: tflint
         run: tflint --chdir infrastructure/
   unit_test:
