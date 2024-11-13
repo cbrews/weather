@@ -23,6 +23,14 @@ jobs:
         run: python -m ruff check .
       - name: "Check: static types"
         run: python -m mypy .
+  tflint:
+    name: "Terraform Static Analysis"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: tflint
+        run: tflint 
   unit_test:
     name: "Unit Tests"
     runs-on: ubuntu-latest

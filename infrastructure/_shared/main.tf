@@ -6,6 +6,20 @@ variable "env" {
     type = string
 }
 
+terraform {
+  required_version = "~> 1"
+  required_providers {
+    google = {
+      version = "~> 6.11"
+      source = "google/google"
+    }
+    google-beta = {
+      version = "~> 3.83.0"
+      source = "google/google-beta"
+    }
+  }
+}
+
 locals {
   prefix = "${var.app_id}-${var.env}"
   region = "us-central1"
