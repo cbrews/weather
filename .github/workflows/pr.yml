@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - name: tflint
-        run: tflint 
+        run: tflint --chdir infrastructure/
   unit_test:
     name: "Unit Tests"
     runs-on: ubuntu-latest
