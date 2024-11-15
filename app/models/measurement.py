@@ -48,4 +48,4 @@ class MeasurementResponse(SQLModel):
             temp_avg=Temperature(
                 celcius=orm.temp_avg, fahrenheit=celcius_to_fahrenheit(orm.temp_avg)
             ),
-        )    
+        )

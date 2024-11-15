@@ -18,13 +18,15 @@ def get_latest_measurements(
     location_id: int,
     session: Session = Depends(session_fastapi_dependency),
 ) -> list[MeasurementResponse]:
-        return [MeasurementResponse.from_data_model(measurement) for measurement in session.exec(
+    return [
+        MeasurementResponse.from_data_model(measurement)
+        for measurement in session.exec(
             select(Measurement)
             .where(Measurement.location_id == location_id)
             .order_by(desc(Measurement.date))
             .limit(5)
-        ).all()]
-    
+        ).all()
+    ]
 
 
 @router.get(
