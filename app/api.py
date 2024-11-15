@@ -4,7 +4,6 @@ from typing import AsyncGenerator
 
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import session_fastapi_dependency as session
 from app.exceptions import NotFound
@@ -24,15 +23,6 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 # App initialization
 api = FastAPI(lifespan=lifespan, dependencies=[Depends(session)])
-
-api.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 for router in get_routers():
     api.include_router(router)
 

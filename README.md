@@ -1,24 +1,28 @@
 # Setup
 
-
-
-## Environment
-
-Setup your environment for local development
-```
-python -m tools.setup
-```
+## Docker
 
 Start database dependencies locally
 ```
 docker compose up
 ```
 
+Also make sure you add this to your hosts file:
+```
+127.0.0.1 weather.local
+```
+
 ## Python (API)
+
+Setup your environment for local development
+```
+python -m tools.setup
+python -m tools.seed-us-cities
+```
 
 Start fastapi locally
 ```
-python -m fastapi dev app
+./tool/start.sh
 ```
 
 Run tests locally
@@ -37,5 +41,5 @@ python -m black . && python -m ruff check . --fix && python -m mypy .
 ```
 nvm use
 yarn
-yarn dev
+yarn dev --host
 ```

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 
 from app.db import session_fastapi_dependency
@@ -15,13 +15,13 @@ router = APIRouter(prefix="/location")
     description="Search for locations by wildcard string.",
 )
 def search_location(
-    search_query: str | None = Query(default=None),
+    search: str,
     session: Session = Depends(session_fastapi_dependency),
 ) -> list[Location]:
-    locations = select(Location)
+    if len(search) < 3:
+        return []
 
-    if search_query is not None:
-        locations = locations.where(Location.name == search_query)
+    locations = select(Location).where(Location.city.ilike(f"%{search}%"))  # type: ignore[attr-defined]
 
     return list(session.exec(locations).all())
 
@@ -52,10 +52,13 @@ def create_location(
 ) -> Location:
     # Ignore types here, the validator will catch these
     location = Location(
-        name=location_partial.name,  # type: ignore[arg-type]
+        city=location_partial.city,  # type: ignore[arg-type]
+        state=location_partial.state,  # type: ignore[arg-type]
+        country=location_partial.country,  # type: ignore[arg-type]
         lat=location_partial.lat,  # type: ignore[arg-type]
         long=location_partial.long,  # type: ignore[arg-type]
     )
+    location.model_validate(location)
 
     session.add(location)
 
@@ -78,8 +81,14 @@ def update_location(
 ) -> Location:
     location = get_location_by_id(id, session)
 
-    if location_partial.name is not None:
-        location.name = location_partial.name
+    if location_partial.city is not None:
+        location.city = location_partial.city
+
+    if location_partial.state is not None:
+        location.state = location_partial.state
+
+    if location_partial.country is not None:
+        location.state = location_partial.country
 
     if location_partial.lat is not None:
         location.lat = location_partial.lat
