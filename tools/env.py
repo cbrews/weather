@@ -3,11 +3,9 @@ import yaml
 
 class Env:
     input_file: str
-    env_data: dict[str, str | int | bool | None]
 
     def __init__(self, input_file: str = "env.yaml"):
         self.input_file = input_file
-        self.env_data = {}
 
     def generate_dotenv(self, env: str, env_file: str = ".env") -> None:
         with open("env.yaml") as env_yaml:

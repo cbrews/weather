@@ -9,7 +9,9 @@ def test_location_apis(client: TestClient) -> None:
     response = client.post(
         url="/location",
         json={
-            "name": "Boston",
+            "city": "Boston",
+            "state": "MA",
+            "country": "US",
             "lat": 42.372225,
             "long": 71.08501,
         },
@@ -21,6 +23,8 @@ def test_location_apis(client: TestClient) -> None:
     location = Location.model_validate(response_json)
 
     assert location.id is not None
-    assert location.name == "Boston"
+    assert location.city == "Boston"
+    assert location.state == "MA"
+    assert location.country == "US"
     assert location.lat == 42.372225
     assert location.long == 71.08501

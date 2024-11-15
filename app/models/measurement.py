@@ -1,5 +1,6 @@
 from datetime import date
 
+from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, Relationship, SQLModel
 
 from app.models.location import Location
@@ -16,6 +17,8 @@ class Measurement(SQLModel, table=True):
     temp_avg: float = Field(description="Stored in celcius")
 
     location: Location = Relationship(back_populates="measurements")
+
+    __table_args__ = (UniqueConstraint("location_id", "date", name="location_id_date"),)
 
 
 class MeasurementResponse(SQLModel):
@@ -45,4 +48,4 @@ class MeasurementResponse(SQLModel):
             temp_avg=Temperature(
                 celcius=orm.temp_avg, fahrenheit=celcius_to_fahrenheit(orm.temp_avg)
             ),
-        )
+        )    
