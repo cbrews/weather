@@ -112,3 +112,24 @@ jobs:
       - name: Install dependencies
         run: yarn
       - run: yarn build
+  
+  deploy_staging:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [build_and_push_app, build_and_push_ui]
+    steps:
+      - run: "TODO"
+  
+  smoke_test:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [deploy_staging]
+    steps:
+      - run: "TODO"
+  
+  deploy_production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [smoke_test]
+    steps:
+      - run: "TODO"
