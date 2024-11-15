@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session, desc, select
 
 from app.db import session_fastapi_dependency
-from app.models.measurement import MeasurementResponse, Measurement
+from app.models.measurement import Measurement, MeasurementResponse
 from app.services.measurement import get_measurement_by_id
 
 router = APIRouter(prefix="/location/{location_id}/measurement")
